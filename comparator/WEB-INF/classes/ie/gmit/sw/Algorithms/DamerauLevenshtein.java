@@ -1,6 +1,14 @@
-package ie.gmit.sw;
+package ie.gmit.sw.Algorithms;
+/**
+ * 
+ * @author John Healy
+ * 
+ * 
+ * DamerauLevenshtein
+ *
+ */
 
-public class DamerauLevenshtein {
+public class DamerauLevenshtein implements algoType {
     public int distance(String s, String t) {
         int[][] distance = new int[s.length() + 1][t.length() + 1];
         for (int i = 0; i <= s.length(); i++) distance[i][0] = i;
@@ -18,14 +26,4 @@ public class DamerauLevenshtein {
         }
         return distance[s.length()][t.length()];
     }
-    
-    public static void main(String[] args) {
-    	DamerauLevenshtein algo = new DamerauLevenshtein();
-    	System.out.println(algo.distance("Distributed Systems", "Disturbed Systems"));
-    	System.out.println(algo.distance("Distributed Systems", "Distressed Sausages"));
-    	System.out.println(algo.distance("Distributed Systems", "Distasteful Sisters"));
-    	System.out.println(algo.distance("Distributed Systems", "Distended Cisterns"));
-    	System.out.println(algo.distance("Distributed Systems", "Distempered Sisyphus"));
-    	System.out.println(algo.distance("Distributed Systems", "Distilled Cistercians"));
-	}
 }

@@ -1,6 +1,12 @@
-package ie.gmit.sw;
+package ie.gmit.sw.Algorithms;
+/**
+ * 
+ * @author John Healy
+ *
+ *Hamming Distance Algo
+ */
 
-public class HammingDistance {
+public class HammingDistance implements algoType {
 	public int distance(String s, String t) {
 		if (s.length() != t.length()) return -1; //Similar length strings only
 		int counter = 0;
@@ -10,14 +16,4 @@ public class HammingDistance {
 		}
 		return  counter;
 	}
-	
-    public static void main(String[] args) {
-    	HammingDistance algo = new HammingDistance();
-    	System.out.println(algo.distance("Distributed Systems", "Disturbed Systems"));
-    	System.out.println(algo.distance("Distributed Systems", "Distressed Sausages"));
-    	System.out.println(algo.distance("Distributed Systems", "Distasteful Sisters"));
-    	System.out.println(algo.distance("Distributed Systems", "Distended Cisterns"));
-    	System.out.println(algo.distance("Distributed Systems", "Distempered Sisyphus"));
-    	System.out.println(algo.distance("Distributed Systems", "Distilled Cistercians"));
-	}	
 }

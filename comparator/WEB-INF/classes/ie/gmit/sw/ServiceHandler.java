@@ -1,12 +1,26 @@
 package ie.gmit.sw;
-
+import ie.gmit.sw.ClientRequest;
+import ie.gmit.sw.Resultator.Resultator;
+import ie.gmit.sw.Resultator.ResultatorInterface;
 import java.io.*;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.concurrent.*;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
-
+/**
+ * 
+ * @author G00313177
+ *
+ *Handles the services, adapted from the online example
+ */
 public class ServiceHandler extends HttpServlet {
+	//Local variables
 	private String remoteHost = null;
 	private static long jobNumber = 0;
+	private static LinkedList<ClientRequest> inQueue = new LinkedList();
+	private static Map<String, Resultator> outQueue = new ConcurrentHashMap<String, Resultator>();
 
 	public void init() throws ServletException {
 		ServletContext ctx = getServletContext();
@@ -22,16 +36,18 @@ public class ServiceHandler extends HttpServlet {
 		String s = req.getParameter("txtS");
 		String t = req.getParameter("txtT");
 		String taskNumber = req.getParameter("frmTaskNumber");
-
-
+		
 		out.print("<html><head><title>Distributed Systems Assignment</title>");		
 		out.print("</head>");		
 		out.print("<body>");
 		
 		if (taskNumber == null){
+			ResultatorInterface temp = new Resultator();
 			taskNumber = new String("T" + jobNumber);
 			jobNumber++;
-			//Add job to in-queue
+			//Assign the variables to a ClientRequest and add to inQueue
+			inQueue.add(new ClientRequest(s, t, algorithm, taskNumber));
+			outQueue.put(taskNumber, temp);
 		}else{
 			//Check out-queue for finished job
 		}
