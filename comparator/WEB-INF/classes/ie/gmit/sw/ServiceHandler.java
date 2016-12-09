@@ -1,7 +1,9 @@
 package ie.gmit.sw;
-import ie.gmit.sw.ClientRequest;
-import ie.gmit.sw.Resultator.Resultator;
-import ie.gmit.sw.Resultator.ResultatorInterface;
+//import ie.gmit.sw.ClientRequest;
+//import ie.gmit.sw.Resultator;
+//import ie.gmit.sw.ResultatorInterface;
+import Resultator;
+
 import java.io.*;
 import java.util.LinkedList;
 import java.util.Map;
@@ -20,7 +22,7 @@ public class ServiceHandler extends HttpServlet {
 	private String remoteHost = null;
 	private static long jobNumber = 0;
 	private static LinkedList<ClientRequest> inQueue = new LinkedList();
-	private static Map<String, Resultator> outQueue = new ConcurrentHashMap<String, Resultator>();
+	private static Map<String, ResultatorInterface> outQueue = new ConcurrentHashMap<String, ResultatorInterface>();
 
 	public void init() throws ServletException {
 		ServletContext ctx = getServletContext();
@@ -50,6 +52,21 @@ public class ServiceHandler extends HttpServlet {
 			outQueue.put(taskNumber, temp);
 		}else{
 			//Check out-queue for finished job
+			ResultatorInterface resultator = outQueue.get(taskNumber);
+			if(resultator != null && resultator.isProcessed() && resultator.getResult() != null){
+				//out.print("<font color=\"#993333\"><b>");
+				out.print("<center>The result of your request is: "+resultator.getResult()+"</center>");
+				outQueue.remove(taskNumber);
+				//stringCompareComplete = true; 
+			}
+			else if(resultator != null && resultator.isProcessed() == false && resultator.getResult() != null){
+				out.print("<font color=\"#993333\"><b>");
+				out.print("Awaiting for the results to return");
+			}
+			else{
+				out.print("<font color=\"#993333\"><b>");
+				out.print("Please wait, your results are being computed");
+			}
 		}
 		
 		

@@ -1,5 +1,6 @@
-import ie.gmit.sw.ClientRequest;
-import ie.gmit.sw.Algorithms.algoType;
+package ie.gmit.sw;
+//import ie.gmit.sw.ClientRequest;
+//import ie.gmit.sw.algoType;
 /**
  * 
  * @author G00313177

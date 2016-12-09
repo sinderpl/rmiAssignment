@@ -1,4 +1,4 @@
-package ie.gmit.sw.Resultator;
+package ie.gmit.sw;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 /**

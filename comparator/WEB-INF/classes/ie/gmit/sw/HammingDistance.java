@@ -1,4 +1,4 @@
-package ie.gmit.sw.Algorithms;
+package ie.gmit.sw;
 /**
  * 
  * @author John Healy

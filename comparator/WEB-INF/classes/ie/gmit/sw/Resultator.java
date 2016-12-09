@@ -1,7 +1,6 @@
-package ie.gmit.sw.Resultator;
+package ie.gmit.sw;
 
-import ie.gmit.sw.Resultator.ResultatorInterface;
-
+//import ie.gmit.sw.ResultatorInterface;
 import java.rmi.RemoteException;
 
 /**
