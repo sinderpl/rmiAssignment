@@ -7,6 +7,7 @@ package ie.gmit.sw;
  *Levenshtein Algo
  */
 public class Levenshtein implements algoType {
+	public Levenshtein(){}
     public int distance(String s, String t) {
         int[][] distance = new int[s.length() + 1][t.length() + 1];
         for (int i = 0; i <= s.length(); i++) distance[i][0] = i;

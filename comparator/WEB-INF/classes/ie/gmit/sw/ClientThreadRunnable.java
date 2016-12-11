@@ -16,36 +16,55 @@ import java.util.concurrent.*;
 public class ClientThreadRunnable implements Runnable {
 	
 	//Local variables
-	Map<String, Resultator> outQueue;
+	Map<String, ResultatorInterface> outQueue;
 	LinkedList<ClientRequest> inQueue;
 	private ListIterator<ClientRequest> iterator;
+	private boolean isRunning = true;
+	private int pass ;
 	
 	//Constructor
-	public ClientThreadRunnable(Map<String, Resultator> outQueue, LinkedList<ClientRequest> inQueue){
+	public ClientThreadRunnable(Map<String, ResultatorInterface> outQueue, LinkedList<ClientRequest> inQueue){
 		this.inQueue = inQueue;
 		this.outQueue = outQueue;
 		this.iterator = inQueue.listIterator(0);
+		pass = 0;
 	}
 	
 	//Base method for any runnable interface
 	//@Override
 	public void run() {
+		
 		try 
 		{
-			StringService service = (StringService) Naming.lookup("rmi://localhost:1099/stringService");
-			while(true){
-				ClientRequest currentJob = getNextJob(); 
-				/**
+			//initialise empty vars for future use
+			ClientRequest currentJob = null;
+			ResultatorInterface resultator = null;
+			
+			//Connect to the rmi string service
+			StringServiceInterface service = (StringServiceInterface) Naming.lookup("rmi://localhost:1099/stringService");
+			//run a loop on the service
+			while(isRunning){
 				if (currentJob == null){
-					return;
-				}**/
-				Resultator resultator = service.compare(currentJob.getStringOne(), currentJob.getStringTwo(), currentJob.getAlgo());
-				addToOutQueue(currentJob.getJobID(), resultator);
-					if(resultator.getResult() != null){
-						addToOutQueue(currentJob.getJobID(), resultator);
+				currentJob = getNextJob();
+				}
+				else{
+					do{ 
+						//compare the strings and return a result
+					resultator = service.compare(currentJob.getStringOne(), currentJob.getStringTwo(), currentJob.getAlgo());
+					if (resultator.getResult() != null){
+						resultator.setProcessed();
 					}
-				while(resultator.isProcessed() == false);
+					addToOutQueue(currentJob.getJobID(), resultator);
+						if(resultator.getResult() != null){
+							System.out.println("results got");
+							addToOutQueue(currentJob.getJobID(), resultator);
+							pass ++;
+							currentJob = null;
+					}
+					}while(resultator.isProcessed() == false);
+				
 				addToOutQueue(currentJob.getJobID(), resultator);
+			}
 			}
 		} 
 		catch (Exception e) {
@@ -53,13 +72,13 @@ public class ClientThreadRunnable implements Runnable {
 		}
 	}
 	
-	public void addToOutQueue(String jobID, Resultator resultator){
+	public void addToOutQueue(String jobID, ResultatorInterface resultator){
 		outQueue.put(jobID, resultator);
 	}
 	
 	public ClientRequest getNextJob(){
-		if (iterator.hasNext()){
-			return iterator.next();
+		if (inQueue.size() != 0){
+			return inQueue.get(pass);
 		}
 		else return null;
 		//return this.inQueue.take();

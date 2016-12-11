@@ -16,7 +16,7 @@ public class StringService extends UnicastRemoteObject implements StringServiceI
 	
 	//Variables 
 	private static final long serialVersionUID = 1L;
-	Resultator resultator ;
+	private ResultatorInterface resultator ;
 	private static AlgorithmFactory factory = AlgorithmFactory.getInstance();
 	
 	//Constructor
@@ -26,15 +26,17 @@ public class StringService extends UnicastRemoteObject implements StringServiceI
 	
 	//Implementation of the compare method, calls the correct algorithm and compares the two strings
 	//returns and instance of the Resultator class to make it possible to check up on the status of the job
-	public Resultator compare(String s, String t, String strAlgo) throws RemoteException{
+	public ResultatorInterface compare(String s, String t, String strAlgo) throws RemoteException{
 		algoType algoInstance = factory.createAlgorithm(strAlgo);
 		resultator = new Resultator();
 		
+		try{
 		//The comparing is handled by a runnable thread here
 		CompareThreadRunnable threadTask = new CompareThreadRunnable(s, t, strAlgo, algoInstance, resultator);
 		Thread compareThread = new Thread(threadTask);
 		compareThread.start();
-			
+		}catch(Exception e){	
+		}
 		return resultator;
 	}
 }

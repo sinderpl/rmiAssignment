@@ -1,5 +1,6 @@
 package ie.gmit.sw;
 
+import java.io.Serializable;
 //import ie.gmit.sw.ResultatorInterface;
 import java.rmi.RemoteException;
 
@@ -9,25 +10,25 @@ import java.rmi.RemoteException;
  *
  *Resultator class implementing the resultator interface
  */
-public class Resultator implements ResultatorInterface{
+public class Resultator implements ResultatorInterface, Serializable {
 	//Variables
 	//Result variable that is returned to the caller
-	private String result;
+	private String resultString;
+	private static final long serialVersionUID = 1L;
 	//Boolean to check whether the object has been processed
-	private boolean isProcessed;
+	private boolean isProcessed = false;
 	
 	//Constructor, initializes the object as not processed
-	public Resultator(){
-		isProcessed = false;
+	public Resultator()throws RemoteException{
 	}
 	//Return the result of the object job
 	public String getResult() throws RemoteException{
-		return result;
+		return resultString;
 	}
 	
 	//Set the result of the object job
-	public void setResult(String result)throws RemoteException{
-		this.result = result;
+	public void setResult(String resulta)throws RemoteException{
+		resultString = resulta;
 	}
 	//Checks if the job has been completed yet
 	public boolean isProcessed() throws RemoteException{

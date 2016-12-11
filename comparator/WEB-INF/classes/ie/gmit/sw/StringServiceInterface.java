@@ -12,5 +12,5 @@ import java.rmi.RemoteException;
 public interface StringServiceInterface extends Remote{
 	//Compares two strings, takes in the algorithm to use, returns a Resultator object
 	//in order to check whether the job has been completed yet
-	public Resultator compare(String s, String t, String algo) throws RemoteException;
+	public ResultatorInterface compare(String s, String t, String algo) throws RemoteException;
 }
